@@ -54,51 +54,63 @@ const cardCopy = {
   },
 };
 
-const SignupCards: React.FC<Props> = ({ language, role }) => (
-  <section className="flex flex-col md:flex-row gap-8 justify-center w-full max-w-5xl mx-auto pb-10">
-    {/* Business Card */}
-    <div className="flex-1 bg-white rounded-lg border shadow-sm p-6 min-w-[300px] max-w-[420px] flex flex-col">
-      <div className="flex items-center gap-2 mb-4">
-        <Building2 size={28} className="text-[#0455fc]" />
-        <span className="font-semibold text-lg">{cardCopy[language].businessTitle}</span>
+const SignupCards: React.FC<Props> = ({ language, role }) => {
+  const handleBusinessSignup = () => {
+    alert(language === "en" 
+      ? "Business registration coming soon! You'll be able to set up your store and payment terms."
+      : "Usajili wa biashara unakuja hivi karibuni! Utaweza kuanzisha duka lako na masharti ya malipo."
+    );
+  };
+
+  const handleCustomerSignup = () => {
+    alert(language === "en"
+      ? "Customer registration coming soon! You'll be able to start making installment purchases."
+      : "Usajili wa wateja unakuja hivi karibuni! Utaweza kuanza kununua kwa malipo ya awamu."
+    );
+  };
+
+  return (
+    <section className="flex flex-col md:flex-row gap-8 justify-center w-full max-w-5xl mx-auto pb-10">
+      {/* Business Card */}
+      <div className="flex-1 bg-white rounded-lg border shadow-sm p-6 min-w-[300px] max-w-[420px] flex flex-col">
+        <div className="flex items-center gap-2 mb-4">
+          <Building2 size={28} className="text-[#0455fc]" />
+          <span className="font-semibold text-lg">{cardCopy[language].businessTitle}</span>
+        </div>
+        <div className="mb-2 text-muted-foreground text-base">{cardCopy[language].businessDesc}</div>
+        <ul className="mb-5 mt-2 text-sm space-y-1 pl-1">
+          {cardCopy[language].businessFeatures.map((feature) => (
+            <li key={feature}>• {feature}</li>
+          ))}
+        </ul>
+        <button
+          className="mt-auto bg-[#0455fc] text-white rounded px-4 py-2 font-medium hover:bg-[#0444d6] transition-colors cursor-pointer"
+          onClick={handleBusinessSignup}
+        >
+          {cardCopy[language].businessCta}
+        </button>
       </div>
-      <div className="mb-2 text-muted-foreground text-base">{cardCopy[language].businessDesc}</div>
-      <ul className="mb-5 mt-2 text-sm space-y-1 pl-1">
-        {cardCopy[language].businessFeatures.map((feature) => (
-          <li key={feature}>• {feature}</li>
-        ))}
-      </ul>
-      <button
-        className="mt-auto bg-[#0455fc] text-white rounded px-4 py-2 font-medium hover:bg-[#0444d6] transition-colors"
-        tabIndex={role === "business" ? 0 : -1}
-        aria-disabled={role !== "business"}
-        disabled={role !== "business"}
-      >
-        {cardCopy[language].businessCta}
-      </button>
-    </div>
-    {/* Customer Card */}
-    <div className="flex-1 bg-white rounded-lg border shadow-sm p-6 min-w-[300px] max-w-[420px] flex flex-col">
-      <div className="flex items-center gap-2 mb-4">
-        <Users size={28} className="text-green-700" />
-        <span className="font-semibold text-lg">{cardCopy[language].customerTitle}</span>
+      {/* Customer Card */}
+      <div className="flex-1 bg-white rounded-lg border shadow-sm p-6 min-w-[300px] max-w-[420px] flex flex-col">
+        <div className="flex items-center gap-2 mb-4">
+          <Users size={28} className="text-green-700" />
+          <span className="font-semibold text-lg">{cardCopy[language].customerTitle}</span>
+        </div>
+        <div className="mb-2 text-muted-foreground text-base">{cardCopy[language].customerDesc}</div>
+        <ul className="mb-5 mt-2 text-sm space-y-1 pl-1">
+          {cardCopy[language].customerFeatures.map((feature) => (
+            <li key={feature}>• {feature}</li>
+          ))}
+        </ul>
+        <button
+          className="mt-auto bg-green-600 text-white rounded px-4 py-2 font-medium hover:bg-green-700 transition-colors cursor-pointer"
+          onClick={handleCustomerSignup}
+        >
+          {cardCopy[language].customerCta}
+        </button>
       </div>
-      <div className="mb-2 text-muted-foreground text-base">{cardCopy[language].customerDesc}</div>
-      <ul className="mb-5 mt-2 text-sm space-y-1 pl-1">
-        {cardCopy[language].customerFeatures.map((feature) => (
-          <li key={feature}>• {feature}</li>
-        ))}
-      </ul>
-      <button
-        className="mt-auto bg-green-600 text-white rounded px-4 py-2 font-medium hover:bg-green-700 transition-colors"
-        tabIndex={role === "customer" ? 0 : -1}
-        aria-disabled={role !== "customer"}
-        disabled={role !== "customer"}
-      >
-        {cardCopy[language].customerCta}
-      </button>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default SignupCards;

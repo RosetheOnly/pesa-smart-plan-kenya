@@ -28,6 +28,7 @@ const texts = {
     confirm: "Start Plan",
     headline: "Installment Plan Selector",
     helper: "Select the item you wish to purchase, then choose your installment period. High value goods have longer minimum periods.",
+    success: (item: string, period: number) => `Great! You've started a ${period}-month installment plan for ${item}. You'll receive SMS reminders and can track your savings progress below.`,
   },
   sw: {
     choose: "Chagua Bidhaa",
@@ -36,6 +37,7 @@ const texts = {
     confirm: "Anza Mpango",
     headline: "Kichagua Mpango wa Awamu",
     helper: "Chagua bidhaa unayotaka kununua, halafu chagua muda wa awamu zako. Bidhaa za thamani kubwa zinahitaji muda mrefu zaidi.",
+    success: (item: string, period: number) => `Vizuri! Umeanza mpango wa miezi ${period} kwa ${item}. Utapokea ukumbusho wa SMS na unaweza kufuatilia maendeleo ya akiba yako hapa chini.`,
   }
 };
 
@@ -46,6 +48,10 @@ const InstallmentSelector: React.FC<Props> = ({ language }) => {
   React.useEffect(() => {
     setPeriod(selected.minPeriod);
   }, [selected]);
+
+  const handleStartPlan = () => {
+    alert(texts[language].success(selected.label, period));
+  };
 
   return (
     <div className="bg-card rounded-lg p-6 mb-7 border shadow">
@@ -60,7 +66,7 @@ const InstallmentSelector: React.FC<Props> = ({ language }) => {
               const good = goods.find(g => g.value === e.target.value);
               if (good) setSelected(good);
             }}
-            className="w-full rounded border px-3 py-2 bg-background text-foreground"
+            className="w-full rounded border px-3 py-2 bg-background text-foreground cursor-pointer"
           >
             {goods.map((g) => (
               <option key={g.value} value={g.value}>{g.label}</option>
@@ -75,20 +81,14 @@ const InstallmentSelector: React.FC<Props> = ({ language }) => {
             max={selected.maxPeriod}
             value={period}
             onChange={e => setPeriod(Number(e.target.value))}
-            className="w-full rounded border px-3 py-2 bg-background text-foreground"
+            className="w-full rounded border px-3 py-2 bg-background text-foreground cursor-pointer"
           />
           <span className="text-xs text-muted-foreground">{texts[language].periodHelp(selected.minPeriod, selected.maxPeriod)}</span>
         </div>
         <div>
           <button
-            className="px-4 py-2 w-full mt-6 rounded bg-primary text-primary-foreground font-semibold shadow transition hover:bg-primary/90"
-            onClick={() => {
-              alert(
-                language === "en"
-                  ? `Started plan: ${selected.label}, ${period} months.`
-                  : `Umeanza mpango wa: ${selected.label}, miezi ${period}.`
-              );
-            }}
+            className="px-4 py-2 w-full mt-6 rounded bg-primary text-primary-foreground font-semibold shadow transition hover:bg-primary/90 cursor-pointer"
+            onClick={handleStartPlan}
           >
             {texts[language].confirm}
           </button>
