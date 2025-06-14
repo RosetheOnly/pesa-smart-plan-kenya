@@ -9,13 +9,13 @@ const texts = {
   en: {
     headline: "Encouragement SMS",
     next: "Next motivational SMS will be sent on:",
-    example: ""You're doing great! Every installment brings you closer to your goal. Keep it up!"",
+    example: "\"You're doing great! Every installment brings you closer to your goal. Keep it up!\"",
     when: "Every Monday at 8:00am",
   },
   sw: {
     headline: "Ujumbe wa Kutia Moto",
     next: "Ujumbe wa kutia moyo utatumwa tarehe:",
-    example: ""Unafanya vizuri! Kila malipo ya awamu yanakuweka karibu na lengo lako. Endelea hivyo!"",
+    example: "\"Unafanya vizuri! Kila malipo ya awamu yanakuweka karibu na lengo lako. Endelea hivyo!\"",
     when: "Kila Jumatatu saa 2:00 asubuhi",
   }
 };
