@@ -1,5 +1,5 @@
-
 import React, { useState } from "react";
+import { Button } from "./ui/button";
 
 interface Good {
   label: string;
@@ -86,12 +86,12 @@ const InstallmentSelector: React.FC<Props> = ({ language }) => {
           <span className="text-xs text-muted-foreground">{texts[language].periodHelp(selected.minPeriod, selected.maxPeriod)}</span>
         </div>
         <div>
-          <button
-            className="px-4 py-2 w-full mt-6 rounded bg-primary text-primary-foreground font-semibold shadow transition hover:bg-primary/90 cursor-pointer"
+          <Button
+            className="w-full mt-6"
             onClick={handleStartPlan}
           >
             {texts[language].confirm}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

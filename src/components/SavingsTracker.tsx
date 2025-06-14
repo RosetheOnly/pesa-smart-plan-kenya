@@ -1,5 +1,5 @@
-
 import React, { useState } from "react";
+import { Button } from "./ui/button";
 
 interface Props {
   language: "en" | "sw";
@@ -56,17 +56,14 @@ const SavingsTracker: React.FC<Props> = ({ language }) => {
       </div>
       <div className="w-full md:w-64 flex flex-col gap-3">
         <p className="text-sm">{copy[language].prompt}</p>
-        <button
-          className={`px-4 py-2 rounded font-semibold border transition cursor-pointer ${
-            withdrawn
-              ? "bg-muted text-muted-foreground cursor-not-allowed"
-              : "bg-green-700 text-white hover:bg-green-800"
-          }`}
+        <Button
+          variant={withdrawn ? "secondary" : "default"}
+          className={withdrawn ? "cursor-not-allowed" : "bg-green-700 hover:bg-green-800"}
           disabled={withdrawn}
           onClick={handleEmergencyRequest}
         >
           {withdrawn ? copy[language].withdrawn : copy[language].withdraw}
-        </button>
+        </Button>
         <div className="text-xs">
           {copy[language].available}: <span className="font-bold">KSh {emergencyAmt}</span>
         </div>
