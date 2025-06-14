@@ -4,6 +4,8 @@ import { X } from "lucide-react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
+import { useUser } from "../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   language: "en" | "sw";
@@ -45,12 +47,34 @@ const RegistrationForm: React.FC<Props> = ({ language, type, isOpen, onClose }) 
     email: "",
     phone: "",
   });
+  const { login } = useUser();
+  const navigate = useNavigate();
 
   const copy = formCopy[language];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert(copy.success);
+    
+    // Create user object
+    const user = {
+      id: Date.now().toString(), // Simple ID generation for demo
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      type: type
+    };
+
+    // Log the user in
+    login(user);
+    
+    // Navigate to appropriate dashboard
+    if (type === "business") {
+      navigate("/business-dashboard");
+    } else {
+      navigate("/customer-dashboard");
+    }
+    
+    // Close form and reset
     onClose();
     setFormData({ name: "", email: "", phone: "" });
   };
