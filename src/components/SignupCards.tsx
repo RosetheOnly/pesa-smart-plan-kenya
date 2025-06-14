@@ -1,7 +1,9 @@
+
 import React, { useState } from "react";
 import { Building2, Users } from "lucide-react";
 import { Button } from "./ui/button";
 import RegistrationForm from "./RegistrationForm";
+import LoginForm from "./LoginForm";
 
 type Props = {
   language: "en" | "sw";
@@ -19,6 +21,7 @@ const cardCopy = {
       "Automated SMS notifications",
     ],
     businessCta: "Register Business",
+    businessLogin: "Login to Business Account",
 
     customerTitle: "For Customers",
     customerDesc: "Buy what you need today and pay over time while saving for the future",
@@ -29,6 +32,7 @@ const cardCopy = {
       "Payment reminders via SMS",
     ],
     customerCta: "Register as Customer",
+    customerLogin: "Login to Customer Account",
   },
   sw: {
     businessTitle: "Kwa Biashara",
@@ -41,6 +45,7 @@ const cardCopy = {
       "Arifa za SMS otomatiki",
     ],
     businessCta: "Sajili Biashara",
+    businessLogin: "Ingia Akaunti ya Biashara",
 
     customerTitle: "Kwa Wateja",
     customerDesc:
@@ -52,11 +57,13 @@ const cardCopy = {
       "Ukumbusho wa malipo kupitia SMS",
     ],
     customerCta: "Sajili kama Mteja",
+    customerLogin: "Ingia Akaunti ya Mteja",
   },
 };
 
 const SignupCards: React.FC<Props> = ({ language, role }) => {
   const [showForm, setShowForm] = useState<"business" | "customer" | null>(null);
+  const [showLoginForm, setShowLoginForm] = useState<"business" | "customer" | null>(null);
 
   return (
     <>
@@ -73,12 +80,21 @@ const SignupCards: React.FC<Props> = ({ language, role }) => {
               <li key={feature}>• {feature}</li>
             ))}
           </ul>
-          <Button
-            className="mt-auto bg-[#0455fc] hover:bg-[#0444d6]"
-            onClick={() => setShowForm("business")}
-          >
-            {cardCopy[language].businessCta}
-          </Button>
+          <div className="mt-auto space-y-2">
+            <Button
+              className="w-full bg-[#0455fc] hover:bg-[#0444d6]"
+              onClick={() => setShowForm("business")}
+            >
+              {cardCopy[language].businessCta}
+            </Button>
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => setShowLoginForm("business")}
+            >
+              {cardCopy[language].businessLogin}
+            </Button>
+          </div>
         </div>
         
         {/* Customer Card */}
@@ -93,12 +109,21 @@ const SignupCards: React.FC<Props> = ({ language, role }) => {
               <li key={feature}>• {feature}</li>
             ))}
           </ul>
-          <Button
-            className="mt-auto bg-green-600 hover:bg-green-700"
-            onClick={() => setShowForm("customer")}
-          >
-            {cardCopy[language].customerCta}
-          </Button>
+          <div className="mt-auto space-y-2">
+            <Button
+              className="w-full bg-green-600 hover:bg-green-700"
+              onClick={() => setShowForm("customer")}
+            >
+              {cardCopy[language].customerCta}
+            </Button>
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => setShowLoginForm("customer")}
+            >
+              {cardCopy[language].customerLogin}
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -107,6 +132,13 @@ const SignupCards: React.FC<Props> = ({ language, role }) => {
         type={showForm || "customer"}
         isOpen={showForm !== null}
         onClose={() => setShowForm(null)}
+      />
+
+      <LoginForm
+        language={language}
+        type={showLoginForm || "customer"}
+        isOpen={showLoginForm !== null}
+        onClose={() => setShowLoginForm(null)}
       />
     </>
   );
