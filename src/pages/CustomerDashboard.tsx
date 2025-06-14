@@ -6,6 +6,7 @@ import { Button } from "../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Progress } from "../components/ui/progress";
 import { useNavigate } from "react-router-dom";
+import { calculateServiceFee, calculateTotalWithFee } from "../utils/serviceFeeCalculator";
 
 const CustomerDashboard = () => {
   const { user, logout } = useUser();
@@ -109,38 +110,46 @@ const CustomerDashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {customerData.installments.map((installment) => (
-                <div key={installment.id} className="border rounded-lg p-4">
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <h3 className="font-semibold">{installment.item}</h3>
-                      <p className="text-sm text-muted-foreground">
-                        KSh {installment.monthlyAmount.toLocaleString()}/month
-                      </p>
+              {customerData.installments.map((installment) => {
+                const serviceFee = calculateServiceFee(installment.monthlyAmount);
+                const totalPayment = calculateTotalWithFee(installment.monthlyAmount);
+                
+                return (
+                  <div key={installment.id} className="border rounded-lg p-4">
+                    <div className="flex justify-between items-start mb-3">
+                      <div>
+                        <h3 className="font-semibold">{installment.item}</h3>
+                        <p className="text-sm text-muted-foreground">
+                          KSh {installment.monthlyAmount.toLocaleString()}/month + KSh {serviceFee} service fee
+                        </p>
+                        <p className="text-xs text-green-600 font-medium">
+                          Total payment: KSh {totalPayment.toLocaleString()}/month
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm">
+                          {installment.installmentsPaid}/{installment.totalInstallments} payments
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Next: {installment.nextPaymentDate}
+                        </p>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <p className="text-sm">
-                        {installment.installmentsPaid}/{installment.totalInstallments} payments
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        Next: {installment.nextPaymentDate}
-                      </p>
+                    
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span>Progress</span>
+                        <span>{Math.round((installment.paidAmount / installment.totalAmount) * 100)}%</span>
+                      </div>
+                      <Progress value={(installment.paidAmount / installment.totalAmount) * 100} />
+                      <div className="flex justify-between text-xs text-muted-foreground">
+                        <span>Paid: KSh {installment.paidAmount.toLocaleString()}</span>
+                        <span>Remaining: KSh {installment.remainingAmount.toLocaleString()}</span>
+                      </div>
                     </div>
                   </div>
-                  
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span>Progress</span>
-                      <span>{Math.round((installment.paidAmount / installment.totalAmount) * 100)}%</span>
-                    </div>
-                    <Progress value={(installment.paidAmount / installment.totalAmount) * 100} />
-                    <div className="flex justify-between text-xs text-muted-foreground">
-                      <span>Paid: KSh {installment.paidAmount.toLocaleString()}</span>
-                      <span>Remaining: KSh {installment.remainingAmount.toLocaleString()}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </CardContent>
         </Card>

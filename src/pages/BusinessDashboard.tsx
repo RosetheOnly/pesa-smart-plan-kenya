@@ -6,6 +6,7 @@ import { Button } from "../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
 import { useNavigate } from "react-router-dom";
+import { calculateServiceFee, calculateTotalWithFee } from "../utils/serviceFeeCalculator";
 
 const BusinessDashboard = () => {
   const { user, logout } = useUser();
@@ -15,6 +16,7 @@ const BusinessDashboard = () => {
   const businessData = {
     totalRevenue: 850000,
     monthlyRevenue: 125000,
+    serviceFeeRevenue: 35000, // Revenue from service fees
     activeCustomers: 45,
     pendingPayments: 15,
     customers: [
@@ -24,6 +26,7 @@ const BusinessDashboard = () => {
         item: "HP ProBook Laptop",
         totalAmount: 45000,
         paidAmount: 30000,
+        monthlyAmount: 5000,
         nextPayment: "2025-01-15",
         status: "Active"
       },
@@ -33,6 +36,7 @@ const BusinessDashboard = () => {
         item: "Samsung Galaxy S23",
         totalAmount: 25000,
         paidAmount: 25000,
+        monthlyAmount: 5000,
         nextPayment: "Completed",
         status: "Completed"
       },
@@ -42,6 +46,7 @@ const BusinessDashboard = () => {
         item: "Dell Inspiron",
         totalAmount: 35000,
         paidAmount: 7000,
+        monthlyAmount: 3500,
         nextPayment: "2025-01-10",
         status: "Overdue"
       }
@@ -97,8 +102,8 @@ const BusinessDashboard = () => {
               <div className="flex items-center gap-2">
                 <TrendingUp className="text-blue-600" size={20} />
                 <div>
-                  <p className="text-sm text-muted-foreground">Monthly Revenue</p>
-                  <p className="text-xl font-bold">KSh {businessData.monthlyRevenue.toLocaleString()}</p>
+                  <p className="text-sm text-muted-foreground">Service Fee Revenue</p>
+                  <p className="text-xl font-bold">KSh {businessData.serviceFeeRevenue.toLocaleString()}</p>
                 </div>
               </div>
             </CardContent>
@@ -140,31 +145,38 @@ const BusinessDashboard = () => {
                 <TableRow>
                   <TableHead>Customer</TableHead>
                   <TableHead>Item</TableHead>
-                  <TableHead>Total Amount</TableHead>
-                  <TableHead>Paid Amount</TableHead>
+                  <TableHead>Monthly Payment</TableHead>
+                  <TableHead>Service Fee</TableHead>
+                  <TableHead>Total Payment</TableHead>
                   <TableHead>Next Payment</TableHead>
                   <TableHead>Status</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {businessData.customers.map((customer) => (
-                  <TableRow key={customer.id}>
-                    <TableCell className="font-medium">{customer.name}</TableCell>
-                    <TableCell>{customer.item}</TableCell>
-                    <TableCell>KSh {customer.totalAmount.toLocaleString()}</TableCell>
-                    <TableCell>KSh {customer.paidAmount.toLocaleString()}</TableCell>
-                    <TableCell>{customer.nextPayment}</TableCell>
-                    <TableCell>
-                      <span className={`px-2 py-1 rounded-full text-xs ${
-                        customer.status === 'Active' ? 'bg-green-100 text-green-800' :
-                        customer.status === 'Completed' ? 'bg-blue-100 text-blue-800' :
-                        'bg-red-100 text-red-800'
-                      }`}>
-                        {customer.status}
-                      </span>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {businessData.customers.map((customer) => {
+                  const serviceFee = calculateServiceFee(customer.monthlyAmount);
+                  const totalPayment = calculateTotalWithFee(customer.monthlyAmount);
+                  
+                  return (
+                    <TableRow key={customer.id}>
+                      <TableCell className="font-medium">{customer.name}</TableCell>
+                      <TableCell>{customer.item}</TableCell>
+                      <TableCell>KSh {customer.monthlyAmount.toLocaleString()}</TableCell>
+                      <TableCell className="text-green-600">KSh {serviceFee}</TableCell>
+                      <TableCell className="font-semibold">KSh {totalPayment.toLocaleString()}</TableCell>
+                      <TableCell>{customer.nextPayment}</TableCell>
+                      <TableCell>
+                        <span className={`px-2 py-1 rounded-full text-xs ${
+                          customer.status === 'Active' ? 'bg-green-100 text-green-800' :
+                          customer.status === 'Completed' ? 'bg-blue-100 text-blue-800' :
+                          'bg-red-100 text-red-800'
+                        }`}>
+                          {customer.status}
+                        </span>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </CardContent>
