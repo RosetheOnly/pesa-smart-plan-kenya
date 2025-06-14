@@ -1,23 +1,29 @@
 
 import React from "react";
-import { SmsReminders, EmergencyAccess, BuildSavings, FlexibleInstallments } from "lucide-react";
+import {
+  CheckSquare, // Flexible Installments (for a task/checklist)
+  PiggyBank,   // Build Savings
+  ShieldCheck, // Emergency Access (security/shield)
+  MessageSquareText // SMS Reminders
+} from "lucide-react";
 
+// List features with matching available icons
 const featureList = [
   {
     label: "Flexible Installments",
-    icon: FlexibleInstallments,
+    icon: CheckSquare,
   },
   {
     label: "Build Savings",
-    icon: BuildSavings,
+    icon: PiggyBank,
   },
   {
     label: "Emergency Access",
-    icon: EmergencyAccess,
+    icon: ShieldCheck,
   },
   {
     label: "SMS Reminders",
-    icon: SmsReminders,
+    icon: MessageSquareText,
   },
 ];
 
@@ -38,17 +44,18 @@ const featureCopy = {
 
 type Props = { language: "en" | "sw" };
 
-const iconComponents = {
-  FlexibleInstallments,
-  BuildSavings,
-  EmergencyAccess,
-  SmsReminders,
+// Map labels to icon components for robustness
+const iconComponents: Record<string, React.FC<{ size?: number; className?: string }>> = {
+  FlexibleInstallments: CheckSquare,
+  BuildSavings: PiggyBank,
+  EmergencyAccess: ShieldCheck,
+  SmsReminders: MessageSquareText,
 };
 
 const LandingFeatures: React.FC<Props> = ({ language }) => (
   <section className="flex justify-center gap-10 mt-5 mb-8">
     {featureList.map((feat, i) => {
-      const IconComp = iconComponents[feat.icon.displayName || feat.icon.name];
+      const IconComp = feat.icon;
       return (
         <div key={i} className="flex flex-col items-center min-w-[80px]">
           <IconComp size={30} className="mb-2 text-muted-foreground" />
