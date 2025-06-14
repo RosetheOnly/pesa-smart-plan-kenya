@@ -1,36 +1,36 @@
 
-// Kenyan Installment Payment Desktop Dashboard
-
 import React, { useState } from "react";
-import LanguageToggle from "../components/LanguageToggle";
-import DashboardSummary from "../components/DashboardSummary";
-import InstallmentSelector from "../components/InstallmentSelector";
-import SavingsTracker from "../components/SavingsTracker";
-import SMSMessageSchedule from "../components/SMSMessageSchedule";
+import LandingHero from "../components/LandingHero";
+import SignupCards from "../components/SignupCards";
+import LandingFeatures from "../components/LandingFeatures";
 
 const Index = () => {
   const [language, setLanguage] = useState<"en" | "sw">("en");
+  const [role, setRole] = useState<"business" | "customer">("business");
 
   return (
-    <div className="min-h-screen bg-background pt-8 flex flex-col items-stretch px-6 lg:px-20 max-w-[1400px] mx-auto">
-      <div className="flex justify-between items-center mb-5">
-        <span className="text-xl font-bold tracking-tight text-primary">Pesa SmartPlan Kenya</span>
-        <LanguageToggle language={language} setLanguage={setLanguage} />
-      </div>
-      <DashboardSummary language={language} />
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div>
-          <InstallmentSelector language={language} />
-          <SMSMessageSchedule language={language} />
+    <div className="min-h-screen bg-[#f6fbfd] pb-10 flex flex-col items-stretch px-2 md:px-0">
+      <header className="flex items-center justify-between py-6 px-6 max-w-6xl mx-auto w-full">
+        <div className="flex items-center gap-2">
+          <span className="inline-block rounded bg-white p-2">
+            <img src="/lovable-uploads/a5afb001-a130-4e74-b93c-b7a74c46ebd9.png" alt="Logo" className="h-7 w-7" />
+          </span>
+          <span className="font-bold text-lg tracking-tight text-[#0455fc]">InstallmentPay</span>
         </div>
-        <div>
-          <SavingsTracker language={language} />
-        </div>
-      </div>
-      <footer className="mt-12 text-sm text-muted-foreground text-center">
-        &copy; {new Date().getFullYear()} Pesa SmartPlan Kenya.
-      </footer>
+        <select
+          className="border bg-white text-xs px-2 py-1 rounded min-w-[80px]"
+          value={language}
+          onChange={(e) => setLanguage(e.target.value as "en" | "sw")}
+        >
+          <option value="en">English</option>
+          <option value="sw">Kiswahili</option>
+        </select>
+      </header>
+      <main className="w-full flex-1 flex flex-col items-center">
+        <LandingHero language={language} role={role} setRole={setRole} />
+        <SignupCards language={language} role={role} />
+        <LandingFeatures language={language} />
+      </main>
     </div>
   );
 };
