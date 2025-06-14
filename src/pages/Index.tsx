@@ -3,10 +3,13 @@ import React, { useState } from "react";
 import LandingHero from "../components/LandingHero";
 import SignupCards from "../components/SignupCards";
 import LandingFeatures from "../components/LandingFeatures";
+import InstallmentSelector from "../components/InstallmentSelector";
+import SavingsTracker from "../components/SavingsTracker";
+import SMSMessageSchedule from "../components/SMSMessageSchedule";
 
 const Index = () => {
   const [language, setLanguage] = useState<"en" | "sw">("en");
-  const [role, setRole] = useState<"business" | "customer">("business");
+  const [role, setRole] = useState<"business" | "customer">("customer");
 
   return (
     <div className="min-h-screen bg-[#f6fbfd] pb-10 flex flex-col items-stretch px-2 md:px-0">
@@ -28,6 +31,15 @@ const Index = () => {
       </header>
       <main className="w-full flex-1 flex flex-col items-center">
         <LandingHero language={language} role={role} setRole={setRole} />
+
+        {role === "customer" && (
+          <div className="w-full max-w-5xl mx-auto px-4 md:px-0">
+            <InstallmentSelector language={language} />
+            <SavingsTracker language={language} />
+            <SMSMessageSchedule language={language} />
+          </div>
+        )}
+
         <SignupCards language={language} role={role} />
         <LandingFeatures language={language} />
       </main>
