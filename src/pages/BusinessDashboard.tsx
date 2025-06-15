@@ -1,11 +1,11 @@
-
 import React, { useState } from "react";
 import { useUser } from "../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
-import { LogOut, Building2, Star, Users, TrendingUp } from "lucide-react";
+import { LogOut, Building2, Star, Users, TrendingUp, Package } from "lucide-react";
 import { Button } from "../components/ui/button";
 import BusinessIdentifier from "../components/BusinessIdentifier";
 import ReviewDisplay from "../components/ReviewDisplay";
+import ProductManager from "../components/ProductManager";
 
 const BusinessDashboard = () => {
   const { user, logout } = useUser();
@@ -114,6 +114,15 @@ const BusinessDashboard = () => {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Product/Service Management */}
+        <div className="bg-white rounded-lg p-6 shadow-sm border">
+          <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+            <Package className="w-6 h-6 text-purple-600" />
+            Products & Services
+          </h3>
+          <ProductManager language={language} />
         </div>
 
         {/* Business Identifier */}
