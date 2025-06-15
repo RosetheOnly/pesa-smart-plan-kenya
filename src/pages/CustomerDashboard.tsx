@@ -10,6 +10,7 @@ import Chatbot from "../components/Chatbot";
 import InstallmentSelector from "../components/InstallmentSelector";
 import SavingsTracker from "../components/SavingsTracker";
 import SMSMessageSchedule from "../components/SMSMessageSchedule";
+import BusinessBrowser from "../components/BusinessBrowser";
 
 const CustomerDashboard = () => {
   const { user, logout } = useUser();
@@ -76,31 +77,44 @@ const CustomerDashboard = () => {
     totalSpent: 33500
   };
 
-  // Mock business data for chatbot
-  const mockBusinessData = [
+  // Mock business data with profiles
+  const mockBusinessesWithProfiles = [
     {
       id: "1",
-      name: "TechHub Electronics", 
+      name: "TechHub Electronics",
       category: "Electronics",
       location: "Nairobi, Kenya",
       rating: 4.5,
-      products: [
-        { id: "1", name: "Samsung Galaxy S24", price: 85000, category: "Smartphones" },
-        { id: "2", name: "MacBook Pro", price: 250000, category: "Laptops" },
-        { id: "3", name: "iPhone 15", price: 120000, category: "Smartphones" }
-      ]
+      reviewCount: 24,
+      description: "Leading electronics store offering the latest smartphones, laptops, and accessories with flexible payment options.",
+      specialties: ["Smartphones", "Laptops", "Gaming Accessories", "Smart Home Devices"],
+      services: ["Free Delivery", "Installation", "2-Year Warranty", "24/7 Support"],
+      workingHours: "Mon-Fri 8AM-8PM, Sat-Sun 9AM-6PM",
     },
     {
       id: "2",
       name: "Fashion Forward",
-      category: "Clothing", 
+      category: "Clothing",
       location: "Mombasa, Kenya",
       rating: 4.2,
-      products: [
-        { id: "4", name: "Designer Dress", price: 15000, category: "Clothing" },
-        { id: "5", name: "Leather Jacket", price: 25000, category: "Clothing" }
-      ]
-    }
+      reviewCount: 18,
+      description: "Trendy fashion store with the latest styles for men and women. Affordable luxury with installment options.",
+      specialties: ["Designer Clothing", "Casual Wear", "Formal Attire", "Accessories"],
+      services: ["Personal Styling", "Alterations", "Home Delivery", "Return Policy"],
+      workingHours: "Mon-Sat 9AM-7PM, Sun 10AM-5PM",
+    },
+    {
+      id: "3",
+      name: "Home & Garden Plus",
+      category: "Home & Garden",
+      location: "Kisumu, Kenya",
+      rating: 4.7,
+      reviewCount: 31,
+      description: "Complete home improvement solutions from furniture to garden supplies. Transform your space with our installment plans.",
+      specialties: ["Furniture", "Garden Tools", "Home Decor", "Appliances"],
+      services: ["Assembly Service", "Design Consultation", "Bulk Discounts", "Seasonal Sales"],
+      workingHours: "Mon-Fri 7AM-6PM, Sat 8AM-5PM",
+    },
   ];
 
   const handleLogout = () => {
@@ -112,6 +126,11 @@ const CustomerDashboard = () => {
     console.log("Review submitted:", reviewData);
     // Here you would typically save to Supabase
     setShowReviewForm(false);
+  };
+
+  const handleBusinessSelect = (business: any) => {
+    console.log("Selected business:", business);
+    // Here you could navigate to a detailed business page or show more info
   };
 
   if (!user) {
@@ -143,6 +162,13 @@ const CustomerDashboard = () => {
           <h2 className="text-2xl font-bold mb-2">Customer Dashboard</h2>
           <p className="text-gray-600">Manage your purchases, reviews, and referrals</p>
         </div>
+
+        {/* Business Browser */}
+        <BusinessBrowser
+          language={language}
+          businesses={mockBusinessesWithProfiles}
+          onBusinessSelect={handleBusinessSelect}
+        />
 
         {/* Installment Plan Selector */}
         <InstallmentSelector language={language} />

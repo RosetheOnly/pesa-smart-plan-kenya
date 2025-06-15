@@ -6,6 +6,7 @@ import { Button } from "../components/ui/button";
 import BusinessIdentifier from "../components/BusinessIdentifier";
 import ReviewDisplay from "../components/ReviewDisplay";
 import ProductManager from "../components/ProductManager";
+import BusinessProfile from "../components/BusinessProfile";
 
 const BusinessDashboard = () => {
   const { user, logout } = useUser();
@@ -53,6 +54,11 @@ const BusinessDashboard = () => {
     console.log("Business selected:", businessId);
   };
 
+  const handleProfileSave = (profileData: any) => {
+    console.log("Business profile saved:", profileData);
+    // Here you would typically save to your backend/database
+  };
+
   if (!user) {
     navigate("/");
     return null;
@@ -82,6 +88,12 @@ const BusinessDashboard = () => {
           <h2 className="text-2xl font-bold mb-2">Business Dashboard</h2>
           <p className="text-gray-600">Manage your business profile, reviews, and sales</p>
         </div>
+
+        {/* Business Profile */}
+        <BusinessProfile
+          language={language}
+          onSave={handleProfileSave}
+        />
 
         {/* Business Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
