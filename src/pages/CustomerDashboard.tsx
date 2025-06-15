@@ -8,6 +8,9 @@ import ReviewForm from "../components/ReviewForm";
 import ReviewDisplay from "../components/ReviewDisplay";
 import ReferralTracker from "../components/ReferralTracker";
 import Chatbot from "../components/Chatbot";
+import InstallmentSelector from "../components/InstallmentSelector";
+import SavingsTracker from "../components/SavingsTracker";
+import SMSMessageSchedule from "../components/SMSMessageSchedule";
 
 const CustomerDashboard = () => {
   const { user, logout } = useUser();
@@ -81,6 +84,15 @@ const CustomerDashboard = () => {
           <h2 className="text-2xl font-bold mb-2">Customer Dashboard</h2>
           <p className="text-gray-600">Manage your purchases, reviews, and referrals</p>
         </div>
+
+        {/* Installment Plan Selector */}
+        <InstallmentSelector language={language} />
+
+        {/* Savings Tracker */}
+        <SavingsTracker language={language} />
+
+        {/* SMS Message Schedule */}
+        <SMSMessageSchedule language={language} />
 
         {/* Referral Tracker */}
         <ReferralTracker language={language} referralData={mockReferralData} />
