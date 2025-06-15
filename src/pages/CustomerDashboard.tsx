@@ -18,13 +18,17 @@ const CustomerDashboard = () => {
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [language] = useState<"en" | "sw">("en");
 
-  // Mock data for demonstration
+  // Mock data for demonstration with media URLs
   const mockReviews = [
     {
       id: "1",
       customerName: "John Doe",
       rating: 5,
       comment: "Excellent service and quality products. The installment plan made it very affordable!",
+      mediaUrls: [
+        "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=300&h=300&fit=crop",
+        "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=300&h=300&fit=crop"
+      ],
       createdAt: "2024-06-10T10:00:00Z",
     },
     {
@@ -32,6 +36,9 @@ const CustomerDashboard = () => {
       customerName: "Jane Smith",
       rating: 4,
       comment: "Good experience overall. Fast delivery and helpful customer support.",
+      mediaUrls: [
+        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=300&h=300&fit=crop"
+      ],
       createdAt: "2024-06-08T15:30:00Z",
     }
   ];
