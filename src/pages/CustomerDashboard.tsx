@@ -1,159 +1,146 @@
 
 import React, { useState } from "react";
 import { useUser } from "../contexts/UserContext";
-import { LogOut, ArrowLeft } from "lucide-react";
-import { Button } from "../components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
-import { Progress } from "../components/ui/progress";
 import { useNavigate } from "react-router-dom";
-import { calculateServiceFee, calculateTotalWithFee } from "../utils/serviceFeeCalculator";
+import { LogOut, Star, Gift, MessageCircle } from "lucide-react";
+import { Button } from "../components/ui/button";
+import ReviewForm from "../components/ReviewForm";
+import ReviewDisplay from "../components/ReviewDisplay";
+import ReferralTracker from "../components/ReferralTracker";
+import Chatbot from "../components/Chatbot";
 
 const CustomerDashboard = () => {
   const { user, logout } = useUser();
   const navigate = useNavigate();
-  const [withdrawnEmergency, setWithdrawnEmergency] = useState(false);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [language] = useState<"en" | "sw">("en");
 
-  // Mock customer data - in real app this would come from backend
-  const customerData = {
-    totalSavings: 12500,
-    installments: [
-      {
-        id: 1,
-        item: "HP ProBook Laptop",
-        totalAmount: 45000,
-        paidAmount: 30000,
-        remainingAmount: 15000,
-        installmentsPaid: 6,
-        totalInstallments: 9,
-        monthlyAmount: 5000,
-        nextPaymentDate: "2025-01-15"
-      },
-      {
-        id: 2,
-        item: "Samsung Galaxy S23",
-        totalAmount: 25000,
-        paidAmount: 25000,
-        remainingAmount: 0,
-        installmentsPaid: 5,
-        totalInstallments: 5,
-        monthlyAmount: 5000,
-        nextPaymentDate: "Completed"
-      }
-    ]
-  };
+  // Mock data for demonstration
+  const mockReviews = [
+    {
+      id: "1",
+      customerName: "John Doe",
+      rating: 5,
+      comment: "Excellent service and quality products. The installment plan made it very affordable!",
+      createdAt: "2024-06-10T10:00:00Z",
+    },
+    {
+      id: "2", 
+      customerName: "Jane Smith",
+      rating: 4,
+      comment: "Good experience overall. Fast delivery and helpful customer support.",
+      createdAt: "2024-06-08T15:30:00Z",
+    }
+  ];
 
-  const emergencyAmount = Math.floor(customerData.totalSavings * 0.02);
-
-  const handleEmergencyRequest = () => {
-    setWithdrawnEmergency(true);
-    alert("Emergency fund request submitted! Funds will be available within 24 hours via M-Pesa.");
-    setTimeout(() => setWithdrawnEmergency(false), 10000);
+  const mockReferralData = {
+    totalReferrals: 12,
+    successfulReferrals: 8,
+    totalEarnings: 35,
+    pendingEarnings: 15,
+    referralCode: "REF123XYZ",
   };
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate("/");
   };
 
+  const handleReviewSubmit = async (reviewData: any) => {
+    console.log("Review submitted:", reviewData);
+    // Here you would typically save to Supabase
+    setShowReviewForm(false);
+  };
+
+  if (!user) {
+    navigate("/");
+    return null;
+  }
+
   return (
-    <div className="min-h-screen bg-[#f6fbfd] p-4">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" onClick={() => navigate('/')}>
-              <ArrowLeft size={20} />
-            </Button>
-            <div>
-              <h1 className="text-2xl font-bold">Welcome, {user?.name}</h1>
-              <p className="text-muted-foreground">Customer Dashboard</p>
-            </div>
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-white shadow-sm border-b">
+        <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            <img src="/lovable-uploads/a5afb001-a130-4e74-b93c-b7a74c46ebd9.png" alt="Logo" className="h-8 w-8" />
+            <h1 className="text-xl font-bold text-[#0455fc]">InstallmentPay</h1>
           </div>
-          <Button variant="outline" onClick={handleLogout}>
-            <LogOut size={16} />
-            Logout
-          </Button>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-gray-600">Welcome, {user.name}</span>
+            <Button variant="outline" size="sm" onClick={handleLogout}>
+              <LogOut size={16} className="mr-2" />
+              Logout
+            </Button>
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-6xl mx-auto px-4 py-8 space-y-8">
+        {/* Welcome Section */}
+        <div className="bg-white rounded-lg p-6 shadow-sm border">
+          <h2 className="text-2xl font-bold mb-2">Customer Dashboard</h2>
+          <p className="text-gray-600">Manage your purchases, reviews, and referrals</p>
         </div>
 
-        {/* Savings Overview */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle>Savings Overview</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <p className="text-sm text-muted-foreground">Total Savings</p>
-                <p className="text-2xl font-bold">KSh {customerData.totalSavings.toLocaleString()}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Available Emergency Fund</p>
-                <p className="text-xl font-semibold text-green-600">KSh {emergencyAmount}</p>
-              </div>
-              <div>
-                <Button 
-                  onClick={handleEmergencyRequest}
-                  disabled={withdrawnEmergency}
-                  className="bg-green-600 hover:bg-green-700"
-                >
-                  {withdrawnEmergency ? "Already Requested" : "Request Emergency Fund"}
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Referral Tracker */}
+        <ReferralTracker language={language} referralData={mockReferralData} />
 
-        {/* Active Installments */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle>Your Installment Plans</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {customerData.installments.map((installment) => {
-                const serviceFee = calculateServiceFee(installment.monthlyAmount);
-                const totalPayment = calculateTotalWithFee(installment.monthlyAmount);
-                
-                return (
-                  <div key={installment.id} className="border rounded-lg p-4">
-                    <div className="flex justify-between items-start mb-3">
-                      <div>
-                        <h3 className="font-semibold">{installment.item}</h3>
-                        <p className="text-sm text-muted-foreground">
-                          KSh {installment.monthlyAmount.toLocaleString()}/month + KSh {serviceFee} service fee
-                        </p>
-                        <p className="text-xs text-green-600 font-medium">
-                          Total payment: KSh {totalPayment.toLocaleString()}/month
-                        </p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-sm">
-                          {installment.installmentsPaid}/{installment.totalInstallments} payments
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          Next: {installment.nextPaymentDate}
-                        </p>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>Progress</span>
-                        <span>{Math.round((installment.paidAmount / installment.totalAmount) * 100)}%</span>
-                      </div>
-                      <Progress value={(installment.paidAmount / installment.totalAmount) * 100} />
-                      <div className="flex justify-between text-xs text-muted-foreground">
-                        <span>Paid: KSh {installment.paidAmount.toLocaleString()}</span>
-                        <span>Remaining: KSh {installment.remainingAmount.toLocaleString()}</span>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+        {/* Reviews Section */}
+        <div className="bg-white rounded-lg p-6 shadow-sm border">
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-xl font-bold flex items-center gap-2">
+              <Star className="w-6 h-6 text-yellow-500" />
+              Product Reviews
+            </h3>
+            <Button onClick={() => setShowReviewForm(true)} className="bg-green-600 hover:bg-green-700">
+              <Star size={16} className="mr-2" />
+              Write Review
+            </Button>
+          </div>
+          <ReviewDisplay language={language} reviews={mockReviews} />
+        </div>
+
+        {/* Recent Purchases */}
+        <div className="bg-white rounded-lg p-6 shadow-sm border">
+          <h3 className="text-xl font-bold mb-4">Recent Purchases</h3>
+          <div className="space-y-3">
+            <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
+              <div>
+                <p className="font-medium">Samsung Galaxy Phone</p>
+                <p className="text-sm text-gray-600">Electronics Store ABC</p>
+              </div>
+              <div className="text-right">
+                <p className="font-bold">KSh 25,000</p>
+                <p className="text-sm text-green-600">3/6 payments made</p>
+              </div>
             </div>
-          </CardContent>
-        </Card>
-      </div>
+            <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
+              <div>
+                <p className="font-medium">Nike Running Shoes</p>
+                <p className="text-sm text-gray-600">Sports Store XYZ</p>
+              </div>
+              <div className="text-right">
+                <p className="font-bold">KSh 8,500</p>
+                <p className="text-sm text-blue-600">Paid in full</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      {/* Review Form Modal */}
+      {showReviewForm && (
+        <ReviewForm
+          language={language}
+          productId="sample-product-id"
+          businessId="sample-business-id"
+          onSubmit={handleReviewSubmit}
+          onClose={() => setShowReviewForm(false)}
+        />
+      )}
+
+      {/* Chatbot */}
+      <Chatbot language={language} />
     </div>
   );
 };
