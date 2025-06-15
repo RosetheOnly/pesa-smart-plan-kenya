@@ -11,6 +11,7 @@ import InstallmentSelector from "../components/InstallmentSelector";
 import SavingsTracker from "../components/SavingsTracker";
 import SMSMessageSchedule from "../components/SMSMessageSchedule";
 import BusinessBrowser from "../components/BusinessBrowser";
+import PaymentDemo from "../components/PaymentDemo";
 
 const CustomerDashboard = () => {
   const { user, logout } = useUser();
@@ -250,6 +251,9 @@ const CustomerDashboard = () => {
             </div>
           </div>
         </div>
+
+        {/* Payment System Demo */}
+        <PaymentDemo language={language} />
       </main>
 
       {/* Review Form Modal */}
