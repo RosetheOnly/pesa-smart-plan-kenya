@@ -77,6 +77,33 @@ const CustomerDashboard = () => {
     totalSpent: 33500
   };
 
+  // Mock business data for chatbot
+  const mockBusinessData = [
+    {
+      id: "1",
+      name: "TechHub Electronics",
+      category: "Electronics",
+      location: "Nairobi, Kenya",
+      rating: 4.5,
+      products: [
+        { id: "1", name: "Samsung Galaxy S24", price: 85000, category: "Smartphones" },
+        { id: "2", name: "MacBook Pro", price: 250000, category: "Laptops" },
+        { id: "3", name: "iPhone 15", price: 120000, category: "Smartphones" }
+      ]
+    },
+    {
+      id: "2", 
+      name: "Fashion Forward",
+      category: "Clothing",
+      location: "Mombasa, Kenya",
+      rating: 4.2,
+      products: [
+        { id: "4", name: "Designer Dress", price: 15000, category: "Clothing" },
+        { id: "5", name: "Leather Jacket", price: 25000, category: "Clothing" }
+      ]
+    }
+  ];
+
   // Mock business data with profiles
   const mockBusinessesWithProfiles = [
     {
